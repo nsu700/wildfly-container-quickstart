@@ -5,10 +5,10 @@
 #
 # https://support.microsoft.com/en-us/help/4026305/sql-contact-microsoft-azure-support
 #
-FROM mcr.microsoft.com/java/jdk:8u242-zulu-centos
+FROM mcr.microsoft.com/java/jdk:8u312-zulu-debian10
 
 # Install packages necessary to run WildFly
-RUN yum update -y && yum -y install bsdtar unzip && yum clean all
+RUN apt-get update && apt-get install -y bsdtar unzip curl 
 
 # Create a user and group used to launch processes
 # The user ID 1000 is the default for the first "regular" user on Fedora/RHEL,
@@ -53,7 +53,7 @@ USER jboss
 EXPOSE 8080
 
 # Make Java 8 obey container resource limits, improve performance
-ENV JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC -Djava.awt.headless=true"
+ENV JAVA_OPTS "-XX:+UnlockExperimentalVMOptions -XX:+UseCGroupMemoryLimitForHeap -XX:+UseG1GC -Djava.awt.headless=true"
 
 # Set the default command to run on boot
 # This will boot WildFly in the standalone mode and bind to all interface
